@@ -6,312 +6,333 @@ import { ApplicationForm } from "@/components/ApplicationForm";
 import { useState, useEffect } from "react";
 
 const Index = () => {
-  const [scrolled, setScrolled] = useState(false);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 10,
+    hours: 13,
+    minutes: 23,
+    seconds: 42
+  });
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev.seconds > 0) {
+          return { ...prev, seconds: prev.seconds - 1 };
+        } else if (prev.minutes > 0) {
+          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
+        } else if (prev.hours > 0) {
+          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
+        } else if (prev.days > 0) {
+          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
+        }
+        return prev;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
   }, []);
 
-  const news = [
+  const audience = [
     {
       id: 1,
-      title: "Новая программа обучения 2024",
-      date: "15 ноября 2024",
-      description: "Запускаем обновленный курс с практическими кейсами от успешных селлеров",
-      tag: "Обучение"
+      title: "НОВИЧКАМ",
+      description: "Вы хотите начать бизнес на маркетплейсах с нуля, но не знаете с чего начать и боитесь сделать ошибки",
+      image: "https://cdn.poehali.dev/files/7b1100ebd66df5ca001558b4ae4aebf1.jpg"
     },
     {
       id: 2,
-      title: "Вебинар: Секреты продаж на маркетплейсах",
-      date: "20 ноября 2024",
-      description: "Бесплатный вебинар для всех желающих. Регистрация уже открыта!",
-      tag: "События"
+      title: "СПЕЦИАЛИСТАМ",
+      description: "У вас есть опыт, но хочется увеличить доход и научиться продавать эффективнее на Озон",
+      image: "https://cdn.poehali.dev/files/7b1100ebd66df5ca001558b4ae4aebf1.jpg"
     },
     {
       id: 3,
-      title: "Успехи наших учеников",
-      date: "25 ноября 2024",
-      description: "Более 150 выпускников достигли оборота свыше 1 млн рублей в месяц",
-      tag: "Результаты"
+      title: "ЭКСПЕРТАМ",
+      description: "Вы уже работаете с маркетплейсами, но хотите освоить новые стратегии продаж и увеличить прибыль",
+      image: "https://cdn.poehali.dev/files/7b1100ebd66df5ca001558b4ae4aebf1.jpg"
     }
   ];
 
-  const promotions = [
+  const program = [
     {
       id: 1,
-      title: "Скидка 30% на курс",
-      description: "Специальное предложение до конца декабря",
-      discount: "-30%",
-      color: "bg-purple-100"
+      title: "СОЦИАЛЬНЫЕ СЕТИ",
+      description: "Обзорное знакомство. Какие социальные сети для продвижения бизнеса!",
+      icon: "Share2"
     },
     {
       id: 2,
-      title: "Бесплатная консультация",
-      description: "Первая встреча с куратором в подарок",
-      discount: "GIFT",
-      color: "bg-orange-100"
+      title: "ТОП-7 ОШИБОК",
+      description: "Разбираем основные ошибки новичков и специалистов в маркетинге. Как их избежать?",
+      icon: "AlertCircle"
     },
     {
       id: 3,
-      title: "Групповой тариф",
-      description: "Приведи друга и получи скидку 20%",
-      discount: "-20%",
-      color: "bg-blue-100"
-    }
-  ];
-
-  const addresses = [
-    {
-      id: 1,
-      city: "Москва",
-      address: "ул. Тверская, д. 12, офис 304",
-      phone: "+7 (495) 123-45-67",
-      icon: "MapPin"
-    },
-    {
-      id: 2,
-      city: "Санкт-Петербург",
-      address: "Невский проспект, д. 28, офис 201",
-      phone: "+7 (812) 987-65-43",
-      icon: "MapPin"
-    },
-    {
-      id: 3,
-      city: "Онлайн",
-      address: "Доступ из любой точки мира",
-      phone: "+7 (800) 555-35-35",
-      icon: "Globe"
+      title: "ПРОБЛЕМА ПОКОЛЕНИЙ",
+      description: "Почему важно вас понять поколение Х, Y, Z? Различия и психология целевой аудитории",
+      icon: "Users"
     }
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-50 via-orange-50 to-blue-50">
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        scrolled ? "bg-white/90 backdrop-blur-md shadow-md" : "bg-transparent"
-      }`}>
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="text-2xl font-bold text-primary">
-            Курсы Анжелики
+    <div className="min-h-screen bg-background">
+      <section className="relative min-h-screen bg-gradient-to-br from-purple-600 via-purple-500 to-purple-400 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMC41IiBvcGFjaXR5PSIwLjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
+        
+        <div className="container mx-auto px-4 py-8 relative z-10">
+          <div className="flex justify-between items-start text-white mb-16">
+            <div className="text-sm">
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Calendar" size={16} />
+                <span className="uppercase font-semibold">8 октября</span>
+              </div>
+              <div className="opacity-70">онлайн</div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-bold mb-1">20:00</div>
+              <div className="opacity-70">старт</div>
+            </div>
+            <div className="text-right">
+              <div className="text-2xl font-bold mb-1">2 ЧАСА</div>
+              <div className="opacity-70">длительность</div>
+            </div>
           </div>
-          <div className="hidden md:flex gap-8">
-            <a href="#about" className="text-foreground hover:text-primary transition-colors">О нас</a>
-            <a href="#addresses" className="text-foreground hover:text-primary transition-colors">Адреса</a>
-            <a href="#news" className="text-foreground hover:text-primary transition-colors">Новости</a>
-            <a href="#promotions" className="text-foreground hover:text-primary transition-colors">Акции</a>
-          </div>
-          <Button className="hover:scale-105 transition-transform">
-            Записаться
-          </Button>
-        </div>
-      </nav>
 
-      <section className="pt-32 pb-20 px-4">
-        <div className="container mx-auto text-center">
-          <Badge className="mb-6 animate-fade-in text-lg px-6 py-2">
-            🎯 Продажи на Озон
-          </Badge>
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in text-foreground">
-            Станьте успешным
-            <br />
-            <span className="text-primary">селлером на Ozon</span>
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-10 max-w-3xl mx-auto animate-fade-in">
-            Пройдите обучение у Анжелики Кардапольцевой и начните зарабатывать на маркетплейсах уже через месяц
-          </p>
-          <div className="flex gap-4 justify-center flex-wrap animate-scale-in">
-            <Button size="lg" className="text-lg px-8 py-6 hover:scale-105 transition-transform">
-              <Icon name="Rocket" size={20} className="mr-2" />
-              Начать обучение
-            </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-6 hover:scale-105 transition-transform">
-              <Icon name="Play" size={20} className="mr-2" />
-              Смотреть видео
-            </Button>
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-white animate-fade-in-left">
+              <p className="text-sm mb-3 opacity-80">вебинар Анжелики Кардапольцевой</p>
+              
+              <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
+                7 ОШИБОК<br />
+                ПРИ ПРОДВИЖЕНИИ<br />
+                В СОЦИАЛЬНЫХ СЕТЯХ
+              </h1>
+
+              <div className="space-y-3 mb-8 text-sm">
+                <div className="flex items-start gap-2">
+                  <Icon name="Check" size={18} className="mt-0.5 flex-shrink-0" />
+                  <p>Узнаете главные ключи, что бы достичь для продвижения в блогах, в Интернете – не работают</p>
+                </div>
+                <div className="flex items-start gap-2">
+                  <Icon name="Check" size={18} className="mt-0.5 flex-shrink-0" />
+                  <p>Поймёте как использовать соц сети для бизнеса</p>
+                </div>
+              </div>
+
+              <Button size="lg" className="bg-accent text-foreground hover:bg-accent/90 text-lg px-10 py-6 rounded-full font-semibold hover:scale-105 transition-transform mb-8">
+                ЗАРЕГИСТРИРОВАТЬСЯ
+              </Button>
+
+              <Card className="bg-white/10 backdrop-blur-sm border-white/20 max-w-sm">
+                <CardContent className="p-6">
+                  <p className="text-xs mb-3">Регистрируйтесь на вебинар.<br />Бонус: уникальную структуру презентации на 2 минуты</p>
+                  <div className="grid grid-cols-4 gap-3 text-center">
+                    <div>
+                      <div className="text-3xl font-bold">{timeLeft.days}</div>
+                      <div className="text-xs opacity-70 uppercase">дни</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">{timeLeft.hours}</div>
+                      <div className="text-xs opacity-70 uppercase">часы</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">{timeLeft.minutes}</div>
+                      <div className="text-xs opacity-70 uppercase">мин</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold">{timeLeft.seconds}</div>
+                      <div className="text-xs opacity-70 uppercase">секунд</div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="relative animate-fade-in-right">
+              <div className="relative z-10">
+                <img 
+                  src="https://cdn.poehali.dev/files/7b1100ebd66df5ca001558b4ae4aebf1.jpg" 
+                  alt="Анжелика Кардапольцева"
+                  className="w-full h-auto rounded-2xl shadow-2xl"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="about" className="py-20 px-4 bg-white/60 backdrop-blur-sm">
+      <section className="py-20 px-4 bg-gradient-to-b from-background to-muted/20">
         <div className="container mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 uppercase">
+            КОМУ БУДЕТ ПОЛЕЗЕН
+          </h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">этот вебинар:</p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {audience.map((item, index) => (
+              <Card 
+                key={item.id}
+                className="relative overflow-hidden group hover:shadow-2xl transition-all duration-300 animate-scale-in border-0"
+                style={{ animationDelay: `${index * 0.15}s` }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-purple-400">
+                  <img 
+                    src={item.image} 
+                    alt={item.title}
+                    className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity"
+                  />
+                </div>
+                <CardContent className="relative z-10 p-8 text-white min-h-[400px] flex flex-col justify-between">
+                  <div>
+                    <div className="text-6xl font-bold mb-6 opacity-50">{item.id}</div>
+                    <h3 className="text-2xl font-bold mb-4 uppercase">{item.title}</h3>
+                  </div>
+                  <p className="text-sm leading-relaxed">{item.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="container mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 uppercase">
+            ПРОГРАММА ВЕБИНАРА
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {program.map((item, index) => (
+              <div 
+                key={item.id}
+                className="text-center animate-fade-in"
+                style={{ animationDelay: `${index * 0.15}s` }}
+              >
+                <div className="relative mb-6">
+                  <div className="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
+                    <Icon name={item.icon as any} size={32} className="text-white" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-12 h-12 bg-accent rounded-full flex items-center justify-center border-4 border-background mx-auto left-0 right-0">
+                    <Icon name="Check" size={20} className="text-primary" />
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold mb-4 uppercase">{item.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 overflow-hidden">
+        <div className="container mx-auto">
+          <div className="bg-gradient-to-br from-purple-600 via-purple-500 to-purple-400 rounded-3xl p-12 md:p-16 text-white relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full translate-y-1/2 -translate-x-1/2"></div>
+            
+            <div className="grid lg:grid-cols-2 gap-12 items-center relative z-10">
+              <div className="animate-fade-in-left">
+                <h2 className="text-4xl md:text-5xl font-bold mb-8 uppercase">
+                  АВТОР КУРСА
+                </h2>
+                <p className="mb-8 text-lg">• Анжелика Кардапольцева</p>
+
+                <div className="grid grid-cols-2 gap-6 mb-8">
+                  <div>
+                    <div className="text-5xl font-bold mb-2">900+</div>
+                    <p className="text-sm opacity-90">Запущенных магазинов на OZON</p>
+                  </div>
+                  <div>
+                    <div className="text-5xl font-bold mb-2">200+</div>
+                    <p className="text-sm opacity-90">Обученных специалистов</p>
+                  </div>
+                  <div>
+                    <div className="text-5xl font-bold mb-2">120+</div>
+                    <p className="text-sm opacity-90">Мастер-классов разработано на актуальные темы</p>
+                  </div>
+                  <div>
+                    <div className="text-5xl font-bold mb-2">100+</div>
+                    <p className="text-sm opacity-90">Тысяч подписчиков в соцсетях</p>
+                  </div>
+                </div>
+
+                <div className="inline-flex items-center gap-3 bg-white/20 backdrop-blur-sm rounded-full px-6 py-4">
+                  <Icon name="Award" size={32} />
+                  <div>
+                    <div className="text-3xl font-bold">300+</div>
+                    <p className="text-xs opacity-90">Выпускников обучения стали успех в 2024 году</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative animate-fade-in-right">
+                <img 
+                  src="https://cdn.poehali.dev/files/7b1100ebd66df5ca001558b4ae4aebf1.jpg" 
+                  alt="Анжелика Кардапольцева"
+                  className="w-full h-auto rounded-2xl shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-4 bg-muted/20">
+        <div className="container mx-auto max-w-6xl">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 uppercase">
+            РЕГИСТРИРУЙТЕСЬ НА ВЕБИНАР
+          </h2>
+          <p className="text-center text-muted-foreground mb-16 text-lg">
+            и получите в подарок структуру презентации
+          </p>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-in-left">
-              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
-                О курсе
-              </h2>
-              <p className="text-lg text-muted-foreground mb-6">
-                Анжелика Кардапольцева — эксперт по продажам на маркетплейсах с опытом более 5 лет. 
-                За это время она помогла более 500 предпринимателям выйти на Ozon и построить прибыльный бизнес.
-              </p>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <Icon name="CheckCircle2" className="text-primary mt-1" size={24} />
-                  <div>
-                    <h3 className="font-semibold text-lg">Практический подход</h3>
-                    <p className="text-muted-foreground">Реальные кейсы и пошаговые инструкции</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="CheckCircle2" className="text-primary mt-1" size={24} />
-                  <div>
-                    <h3 className="font-semibold text-lg">Поддержка кураторов</h3>
-                    <p className="text-muted-foreground">Ответы на вопросы 24/7 в закрытом чате</p>
-                  </div>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Icon name="CheckCircle2" className="text-primary mt-1" size={24} />
-                  <div>
-                    <h3 className="font-semibold text-lg">Гарантия результата</h3>
-                    <p className="text-muted-foreground">Первые продажи в течение 30 дней</p>
+              <ApplicationForm />
+            </div>
+
+            <div className="relative animate-fade-in-right">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-purple-400 rounded-3xl transform rotate-6"></div>
+                <div className="relative bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl p-8 shadow-2xl">
+                  <div className="text-white text-center">
+                    <div className="mb-6">
+                      <Icon name="Gift" size={64} className="mx-auto opacity-80" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4 uppercase">
+                      УНИКАЛЬНАЯ<br />СТРУКТУРА<br />ПРЕЗЕНТАЦИИ
+                    </h3>
+                    <p className="text-sm opacity-90 mb-6">
+                      Зарегистрируйтесь на вебинар и получите готовый шаблон презентации
+                    </p>
+                    <div className="relative mx-auto w-48 h-64 bg-white/20 backdrop-blur-sm rounded-lg p-4">
+                      <img 
+                        src="https://cdn.poehali.dev/files/7b1100ebd66df5ca001558b4ae4aebf1.jpg" 
+                        alt="Презентация"
+                        className="w-full h-full object-cover rounded-lg"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div className="animate-fade-in-right">
-              <Card className="overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow">
-                <CardContent className="p-0">
-                  <div className="bg-gradient-to-br from-purple-400 to-orange-300 h-96 flex items-center justify-center">
-                    <Icon name="GraduationCap" size={120} className="text-white opacity-80" />
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
           </div>
-        </div>
-      </section>
-
-      <section id="addresses" className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-foreground">
-            Наши адреса
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {addresses.map((address, index) => (
-              <Card 
-                key={address.id} 
-                className="hover:shadow-xl transition-all hover:-translate-y-2 animate-fade-in"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <CardContent className="p-6">
-                  <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                    <Icon name={address.icon as any} size={32} className="text-primary" />
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">{address.city}</h3>
-                  <p className="text-muted-foreground mb-2">{address.address}</p>
-                  <div className="flex items-center gap-2 text-primary font-semibold">
-                    <Icon name="Phone" size={18} />
-                    {address.phone}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="news" className="py-20 px-4 bg-white/60 backdrop-blur-sm">
-        <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center text-foreground">
-            Новости
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {news.map((item, index) => (
-              <Card 
-                key={item.id} 
-                className="hover:shadow-xl transition-all hover:-translate-y-2 animate-fade-in"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <CardContent className="p-6">
-                  <Badge className="mb-4">{item.tag}</Badge>
-                  <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4 flex items-center gap-2">
-                    <Icon name="Calendar" size={16} />
-                    {item.date}
-                  </p>
-                  <p className="text-muted-foreground mb-4">{item.description}</p>
-                  <Button variant="link" className="p-0 h-auto font-semibold">
-                    Читать далее
-                    <Icon name="ArrowRight" size={16} className="ml-2" />
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="promotions" className="py-20 px-4">
-        <div className="container mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-center text-foreground">
-            Акции
-          </h2>
-          <p className="text-center text-muted-foreground text-xl mb-12">
-            Специальные предложения для вас
-          </p>
-          <div className="grid md:grid-cols-3 gap-8 mb-20">
-            {promotions.map((promo, index) => (
-              <Card 
-                key={promo.id} 
-                className="hover:shadow-xl transition-all hover:-translate-y-2 animate-scale-in border-2 border-primary/20"
-                style={{ animationDelay: `${index * 0.2}s` }}
-              >
-                <CardContent className="p-8 text-center">
-                  <div className={`${promo.color} w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6`}>
-                    <span className="text-3xl font-bold text-primary">{promo.discount}</span>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-3">{promo.title}</h3>
-                  <p className="text-muted-foreground mb-6">{promo.description}</p>
-                  <Button className="w-full hover:scale-105 transition-transform">
-                    Получить предложение
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          <ApplicationForm />
         </div>
       </section>
 
       <footer className="py-12 px-4 bg-foreground text-background">
-        <div className="container mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">Курсы Анжелики</h3>
-              <p className="text-sm opacity-80">
-                Профессиональное обучение продажам на маркетплейсах
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Навигация</h4>
-              <ul className="space-y-2 text-sm opacity-80">
-                <li><a href="#about" className="hover:opacity-100 transition-opacity">О нас</a></li>
-                <li><a href="#addresses" className="hover:opacity-100 transition-opacity">Адреса</a></li>
-                <li><a href="#news" className="hover:opacity-100 transition-opacity">Новости</a></li>
-                <li><a href="#promotions" className="hover:opacity-100 transition-opacity">Акции</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Контакты</h4>
-              <ul className="space-y-2 text-sm opacity-80">
-                <li>+7 (800) 555-35-35</li>
-                <li>info@angelika-courses.ru</li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Социальные сети</h4>
-              <div className="flex gap-4">
-                <Icon name="Instagram" className="cursor-pointer hover:scale-110 transition-transform" />
-                <Icon name="Youtube" className="cursor-pointer hover:scale-110 transition-transform" />
-                <Icon name="Send" className="cursor-pointer hover:scale-110 transition-transform" />
-              </div>
-            </div>
+        <div className="container mx-auto text-center">
+          <div className="mb-6">
+            <h3 className="text-2xl font-bold mb-2">Курсы Анжелики Кардапольцевой</h3>
+            <p className="text-sm opacity-80">Профессиональное обучение продажам на маркетплейсах</p>
           </div>
-          <div className="border-t border-background/20 pt-8 text-center text-sm opacity-80">
-            © 2024 Курсы Анжелики Кардапольцевой. Все права защищены.
+          <div className="flex justify-center gap-6 mb-6">
+            <Icon name="Instagram" className="cursor-pointer hover:scale-110 transition-transform" size={24} />
+            <Icon name="Youtube" className="cursor-pointer hover:scale-110 transition-transform" size={24} />
+            <Icon name="Send" className="cursor-pointer hover:scale-110 transition-transform" size={24} />
+          </div>
+          <div className="text-sm opacity-80">
+            © 2024 Все права защищены
           </div>
         </div>
       </footer>

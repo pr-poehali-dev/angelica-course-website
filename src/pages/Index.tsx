@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import Icon from "@/components/ui/icon";
+import { ApplicationForm } from "@/components/ApplicationForm";
 import { useState, useEffect } from "react";
 
 const Index = () => {
@@ -250,7 +251,7 @@ const Index = () => {
           <p className="text-center text-muted-foreground text-xl mb-12">
             Специальные предложения для вас
           </p>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 mb-20">
             {promotions.map((promo, index) => (
               <Card 
                 key={promo.id} 
@@ -270,6 +271,8 @@ const Index = () => {
               </Card>
             ))}
           </div>
+          
+          <ApplicationForm />
         </div>
       </section>
 
